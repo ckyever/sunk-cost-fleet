@@ -17,8 +17,7 @@ export class Gameboard {
   }
 
   place(coordinateList) {
-    // Check all coordinates are valid first
-    // We use a standard for loop so we can exit early when finding an invalid coordinate
+    // Check if each coordinate is valid and is not already populated
     for (let i = 0; i < coordinateList.length; i++) {
       let rowIndex;
       let columnIndex;
@@ -32,6 +31,9 @@ export class Gameboard {
         return false;
       }
       if (!this.#isCoordinateIndexValid(columnIndex)) {
+        return false;
+      }
+      if (this.board[rowIndex][columnIndex] != null) {
         return false;
       }
     }
