@@ -6,6 +6,12 @@ test("Create ship object", () => {
   expect(typeof ship).toBe("object");
 });
 
+test("Create ship sets an ID", () => {
+  const ship = new Ship(4);
+  // Second ship created in this file so ID should be 2
+  expect(ship.id).toBe(2);
+});
+
 test("Create small ship", () => {
   const ship = new Ship(2);
   expect(ship.length).toBe(2);
