@@ -1,6 +1,8 @@
 import { Ship } from "./Ship.js";
 
 export class Gameboard {
+  static MISSED_SHOT = "MISS";
+
   constructor(size) {
     this.size = size;
     this.board = this.#generateBoard(size);
@@ -60,5 +62,17 @@ export class Gameboard {
 
   #isCoordinateIndexValid(coordinateIndex) {
     return coordinateIndex >= 0 && coordinateIndex < this.size;
+  }
+
+  receiveAttack(rowIndex, columnIndex) {
+    const position = this.board[rowIndex][columnIndex];
+    if (position == null || position === Gameboard.MISSED_SHOT) {
+      this.board[rowIndex][columnIndex] = Gameboard.MISSED_SHOT;
+      return false;
+    } else {
+      const shipIndex = this.ships.findIndex((ship) => ship.id === position);
+      this.ships[shipIndex].hit();
+      return true;
+    }
   }
 }
