@@ -75,4 +75,15 @@ export class Gameboard {
       return true;
     }
   }
+
+  isAllShipsSunk() {
+    const totalSunk = this.ships.reduce((totalSunk, ship) => {
+      if (ship.isSunk()) {
+        return totalSunk + 1;
+      } else {
+        return totalSunk;
+      }
+    }, 0);
+    return totalSunk === this.ships.length;
+  }
 }

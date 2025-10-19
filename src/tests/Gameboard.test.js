@@ -202,3 +202,40 @@ test("Sink a ship", () => {
   game.receiveAttack(1, 3);
   expect(game.ships[0].isSunk()).toBe(true);
 });
+
+test("Sink all ships on board", () => {
+  const game = new Gameboard(4);
+  game.place([
+    [3, 1],
+    [3, 2],
+    [3, 3],
+  ]);
+  game.place([
+    [2, 1],
+    [2, 2],
+  ]);
+  game.receiveAttack(3, 1);
+  game.receiveAttack(3, 2);
+  game.receiveAttack(3, 3);
+  game.receiveAttack(2, 1);
+  game.receiveAttack(2, 2);
+  expect(game.isAllShipsSunk()).toBe(true);
+});
+
+test("Sink some ships on the board", () => {
+  const game = new Gameboard(4);
+  game.place([
+    [3, 1],
+    [3, 2],
+    [3, 3],
+  ]);
+  game.place([
+    [2, 1],
+    [2, 2],
+  ]);
+  game.receiveAttack(3, 1);
+  game.receiveAttack(3, 2);
+  game.receiveAttack(3, 3);
+  game.receiveAttack(2, 1);
+  expect(game.isAllShipsSunk()).toBe(false);
+});
