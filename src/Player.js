@@ -16,13 +16,10 @@ export class Player {
       }
 
       const isVertical = Math.random() > 0.5 ? true : false;
-      console.log(isVertical);
       const startingRowIndex = Math.floor(Math.random() * this.gameboard.size);
-      console.log(startingRowIndex);
       const startingColumnIndex = Math.floor(
         Math.random() * this.gameboard.size,
       );
-      console.log(startingColumnIndex);
 
       let coordinateList = [];
       if (isVertical) {
@@ -45,7 +42,6 @@ export class Player {
       }
 
       if (this.gameboard.place(coordinateList)) {
-        console.log(coordinateList);
         shipLengthsIndex++;
         numberOfShips--;
       }
