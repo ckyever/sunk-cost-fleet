@@ -1,7 +1,8 @@
 import { Ship } from "./Ship.js";
 
 export class Gameboard {
-  static MISSED_SHOT = "MISS";
+  static SHOT_TYPE_MISSED = "MISS";
+  static SHOT_TYPE_HIT = "HIT";
   static MIN_SHIP_LENGTH = 2;
   static MAX_SHIP_LENGTH = 4;
 
@@ -68,8 +69,8 @@ export class Gameboard {
 
   receiveAttack(rowIndex, columnIndex) {
     const position = this.board[rowIndex][columnIndex];
-    if (position == null || position === Gameboard.MISSED_SHOT) {
-      this.board[rowIndex][columnIndex] = Gameboard.MISSED_SHOT;
+    if (position == null || position === Gameboard.SHOT_TYPE_MISSED) {
+      this.board[rowIndex][columnIndex] = Gameboard.SHOT_TYPE_MISSED;
       return false;
     } else {
       const shipIndex = this.ships.findIndex((ship) => ship.id === position);
@@ -105,8 +106,15 @@ export class Gameboard {
           square.textContent = shipId;
         }
 
-        if (this.board[y][x] != null) {
-          square.classList.add("ship");
+        switch (this.board[y][x]) {
+          case Gameboard.SHOT_TYPE_MISSED:
+            square.classList.add("miss");
+            break;
+          case null:
+            // Add no styling
+            break;
+          default:
+            square.classList.add("ship");
         }
 
         square.dataset.x = x;

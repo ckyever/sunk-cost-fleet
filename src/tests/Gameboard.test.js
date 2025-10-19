@@ -147,7 +147,7 @@ test("Reflect a missed attack on gameboard", () => {
   const game = new Gameboard(4);
   game.receiveAttack(0, 0);
   expect(game.board).toEqual([
-    [Gameboard.MISSED_SHOT, null, null, null],
+    [Gameboard.SHOT_TYPE_MISSED, null, null, null],
     [null, null, null, null],
     [null, null, null, null],
     [null, null, null, null],

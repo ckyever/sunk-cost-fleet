@@ -85,6 +85,7 @@ h6 {
   display: grid;
   width: 400px;
   height: 400px;
+  background-color: lightskyblue;
 }
 
 .board .square {
@@ -92,5 +93,13 @@ h6 {
 }
 
 .square.ship {
-  background-color: cyan;
+  background-color: lightgray;
+}
+
+.square.ship.hit {
+  background-color: red;
+}
+
+.square.miss {
+  background-color: white;
 }
