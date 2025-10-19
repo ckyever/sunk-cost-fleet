@@ -86,4 +86,22 @@ export class Gameboard {
     }, 0);
     return totalSunk === this.ships.length;
   }
+
+  generateHtml() {
+    const boardElement = document.createElement("div");
+    boardElement.classList = "board";
+    boardElement.style.gridTemplate = `repeat(${this.size}, 1fr) / repeat(${this.size}, 1fr)`;
+
+    for (let y = 0; y < this.size; y++) {
+      for (let x = 0; x < this.size; x++) {
+        const square = document.createElement("div");
+        square.classList = "square";
+        square.dataset.x = x;
+        square.dataset.y = y;
+        boardElement.appendChild(square);
+      }
+    }
+
+    return boardElement;
+  }
 }

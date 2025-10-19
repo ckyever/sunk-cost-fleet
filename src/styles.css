@@ -75,3 +75,18 @@ h6 {
   isolation: isolate;
 }
 /* End of CSS Reset */
+
+.gameboards {
+  display: flex;
+  gap: 100px;
+}
+
+.board {
+  display: grid;
+  width: 400px;
+  height: 400px;
+}
+
+.board .square {
+  border: 1px solid black;
+}
