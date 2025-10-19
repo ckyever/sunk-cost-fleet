@@ -2,6 +2,8 @@ import { Ship } from "./Ship.js";
 
 export class Gameboard {
   static MISSED_SHOT = "MISS";
+  static MIN_SHIP_LENGTH = 4;
+  static MAX_SHIP_LENGTH = 4;
 
   constructor(size) {
     this.size = size;
