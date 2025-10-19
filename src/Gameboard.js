@@ -2,7 +2,7 @@ import { Ship } from "./Ship.js";
 
 export class Gameboard {
   static MISSED_SHOT = "MISS";
-  static MIN_SHIP_LENGTH = 4;
+  static MIN_SHIP_LENGTH = 2;
   static MAX_SHIP_LENGTH = 4;
 
   constructor(size) {
@@ -98,6 +98,17 @@ export class Gameboard {
       for (let x = 0; x < this.size; x++) {
         const square = document.createElement("div");
         square.classList = "square";
+
+        // CKYTODO: Temporary styling to visualise placed ships
+        const shipId = this.board[y][x];
+        if (shipId != null) {
+          square.textContent = shipId;
+        }
+
+        if (this.board[y][x] != null) {
+          square.classList.add("ship");
+        }
+
         square.dataset.x = x;
         square.dataset.y = y;
         boardElement.appendChild(square);

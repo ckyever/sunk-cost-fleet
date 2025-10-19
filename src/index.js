@@ -8,5 +8,8 @@ const opponent = new Computer();
 const playerBoard = document.querySelector(".gameboards .player");
 const opponentBoard = document.querySelector(".gameboards .opponent");
 
+player.randomlyPlaceShips();
+console.table(player.gameboard.board);
+
 playerBoard.appendChild(player.gameboard.generateHtml());
 opponentBoard.appendChild(opponent.gameboard.generateHtml());

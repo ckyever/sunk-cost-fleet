@@ -5,14 +5,8 @@ test("Create player object", () => {
   expect(typeof player).toBe("object");
 });
 
-test("Randomly place small number of ships", () => {
+test("Randomly place ships", () => {
   const player = new Player();
-  player.randomlyPlaceShips(2);
-  expect(player.gameboard.ships.length).toBe(2);
-});
-
-test("Randomly place large number of ships", () => {
-  const player = new Player();
-  player.randomlyPlaceShips(7);
-  expect(player.gameboard.ships.length).toBe(7);
+  player.randomlyPlaceShips();
+  expect(player.gameboard.ships.length).toBe(5);
 });

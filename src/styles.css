@@ -90,3 +90,7 @@ h6 {
 .board .square {
   border: 1px solid black;
 }
+
+.square.ship {
+  background-color: cyan;
+}
