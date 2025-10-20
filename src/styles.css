@@ -76,9 +76,18 @@ h6 {
 }
 /* End of CSS Reset */
 
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
 .gameboards {
   display: flex;
-  gap: 100px;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .board {
