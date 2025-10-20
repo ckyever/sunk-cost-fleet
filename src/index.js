@@ -3,6 +3,15 @@ import { delay } from "./utility.js";
 import { Human } from "./Human.js";
 import "./styles.css";
 
+function renderBoards() {
+  playerBoard.innerHTML = "";
+  opponentBoard.innerHTML = "";
+  playerBoard.appendChild(player.gameboard.generateHtml());
+  opponentBoard.appendChild(opponent.gameboard.generateHtml());
+}
+
+const DEFAULT_COMPUTER_WAIT_TIME = 1000; // in milliseconds
+
 const player = new Human();
 const opponent = new Computer();
 
@@ -13,15 +22,8 @@ player.randomlyPlaceShips();
 opponent.randomlyPlaceShips();
 renderBoards();
 
-function renderBoards() {
-  playerBoard.innerHTML = "";
-  opponentBoard.innerHTML = "";
-  playerBoard.appendChild(player.gameboard.generateHtml());
-  opponentBoard.appendChild(opponent.gameboard.generateHtml());
-}
-
+// Human player makes the first move
 let isPlayersTurn = true;
-const DEFAULT_COMPUTER_WAIT_TIME = 1000;
 
 opponentBoard.addEventListener("click", (event) => {
   if (isPlayersTurn) {
@@ -29,7 +31,6 @@ opponentBoard.addEventListener("click", (event) => {
     const columnIndex = event.target.dataset.x;
 
     if (rowIndex != null && columnIndex != null) {
-      console.log(`${rowIndex}, ${columnIndex}`);
       opponent.gameboard.receiveAttack(rowIndex, columnIndex);
       renderBoards();
 
