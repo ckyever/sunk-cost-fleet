@@ -3,7 +3,7 @@ import { delay } from "./utility.js";
 import { Human } from "./Human.js";
 import "./styles.css";
 
-const DEFAULT_COMPUTER_WAIT_TIME = 0; // in milliseconds
+const DEFAULT_COMPUTER_WAIT_TIME = 1000; // in milliseconds
 
 const playerBoard = document.querySelector(".player .board-container");
 const opponentBoard = document.querySelector(".opponent .board-container");
@@ -55,7 +55,7 @@ function checkForWinner() {
 
 newGame();
 
-opponentBoard.addEventListener("click", (event) => {
+opponentBoard.addEventListener("click", async (event) => {
   if (!isGameInProgress) {
     return;
   }
@@ -64,22 +64,32 @@ opponentBoard.addEventListener("click", (event) => {
     const columnIndex = event.target.dataset.x;
 
     if (rowIndex != null && columnIndex != null) {
-      opponent.gameboard.receiveAttack(rowIndex, columnIndex);
+      let isAttackSuccessful = opponent.gameboard.receiveAttack(
+        rowIndex,
+        columnIndex,
+      );
       renderBoards();
       if (checkForWinner()) {
+        return;
+      }
+      if (isAttackSuccessful) {
+        // Only switch turns if player misses
         return;
       }
 
       // Computer makes a turn
       isPlayersTurn = false;
-      delay(DEFAULT_COMPUTER_WAIT_TIME).then(() => {
-        opponent.attack(player.gameboard);
-        isPlayersTurn = true;
+      while (!isPlayersTurn) {
+        await delay(DEFAULT_COMPUTER_WAIT_TIME);
+        isAttackSuccessful = opponent.attack(player.gameboard);
+        if (!isAttackSuccessful) {
+          isPlayersTurn = true;
+        }
         renderBoards();
         if (checkForWinner()) {
           return;
         }
-      });
+      }
     }
   }
 });

@@ -8,6 +8,7 @@ export class Computer extends Player {
   attack(gameboard) {
     const MAX_ATTEMPTS = 1000;
     let attempts = 0;
+    let result;
     while (true) {
       if (attempts > MAX_ATTEMPTS) {
         throw new Error("Attempted to attack too many times");
@@ -17,9 +18,10 @@ export class Computer extends Player {
       if (gameboard.board[rowIndex][columnIndex].isHit) {
         continue;
       } else {
-        gameboard.receiveAttack(rowIndex, columnIndex);
+        result = gameboard.receiveAttack(rowIndex, columnIndex);
         break;
       }
     }
+    return result;
   }
 }
