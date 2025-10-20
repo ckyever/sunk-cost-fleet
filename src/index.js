@@ -1,4 +1,5 @@
 import { Computer } from "./Computer.js";
+import { delay } from "./utility.js";
 import { Human } from "./Human.js";
 import "./styles.css";
 
@@ -19,19 +20,8 @@ function renderBoards() {
   opponentBoard.appendChild(opponent.gameboard.generateHtml());
 }
 
-// Alternate between turns
-// If players turn allow click
-// On click will call receiveAttack
-// If computer turn
-// Randomise place on grid and call receiveattack
-// Check if all ships have sunk
-// Go to next players turn
 let isPlayersTurn = true;
-
-// while (
-//   !player.gameboard.isAllShipsSunk() ||
-//   !opponent.gameboard.isAllShipsSunk()
-// ) {}
+const DEFAULT_COMPUTER_WAIT_TIME = 1000;
 
 opponentBoard.addEventListener("click", (event) => {
   if (isPlayersTurn) {
@@ -42,6 +32,14 @@ opponentBoard.addEventListener("click", (event) => {
       console.log(`${rowIndex}, ${columnIndex}`);
       opponent.gameboard.receiveAttack(rowIndex, columnIndex);
       renderBoards();
+
+      // Computer makes a turn
+      isPlayersTurn = false;
+      delay(DEFAULT_COMPUTER_WAIT_TIME).then(() => {
+        opponent.attack(player.gameboard);
+        isPlayersTurn = true;
+        renderBoards();
+      });
     }
   }
 });
