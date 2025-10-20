@@ -134,6 +134,11 @@ export class Gameboard {
       // Create ship image
       const shipImageElement = document.createElement("img");
       shipImageElement.classList = "ship-image";
+
+      if (currentShip.isSunk()) {
+        shipImageElement.classList.add("sunk");
+      }
+
       let shipImage;
       switch (currentShip.length) {
         case 2:
