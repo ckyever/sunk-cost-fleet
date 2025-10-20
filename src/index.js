@@ -7,7 +7,9 @@ function renderBoards() {
   playerBoard.innerHTML = "";
   opponentBoard.innerHTML = "";
   playerBoard.appendChild(player.gameboard.generateHtml());
+  player.gameboard.renderShips(".player");
   opponentBoard.appendChild(opponent.gameboard.generateHtml());
+  opponent.gameboard.renderShips(".opponent");
 }
 
 const DEFAULT_COMPUTER_WAIT_TIME = 1000; // in milliseconds

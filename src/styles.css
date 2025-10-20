@@ -86,15 +86,17 @@ h6 {
   width: 400px;
   height: 400px;
   background-color: lightskyblue;
+  position: relative;
 }
 
 .board .square {
+  position: relative;
   border: 1px solid black;
 }
 
-.square.ship:not(.hit) {
+/* .square.ship:not(.hit) {
   background-color: lightgray;
-}
+} */
 
 .square.hit {
   background-color: white;
@@ -102,4 +104,48 @@ h6 {
 
 .square.ship.hit {
   background-color: red;
+}
+
+.ship-image {
+  pointer-events: none;
+  user-select: none;
+  position: absolute;
+  z-index: 1;
+  object-fit: fill;
+}
+
+.ship-image.horizontal {
+  transform-origin: top;
+  margin-top: 20px;
+  margin-left: -20px;
+}
+
+.ship-image.small {
+  height: 80px;
+  min-width: 99px;
+  margin-left: -31px;
+}
+
+.ship-image.small.horizontal {
+  margin-left: -50px;
+}
+
+.ship-image.medium {
+  height: 120px;
+  min-width: 140px;
+  margin-left: -52px;
+}
+
+.ship-image.medium.horizontal {
+  margin-left: -72px;
+}
+
+.ship-image.large {
+  height: 160px;
+  min-width: 150px;
+  margin-left: -56px;
+}
+
+.ship-image.large.horizontal {
+  margin-left: -76px;
 }

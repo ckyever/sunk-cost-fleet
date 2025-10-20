@@ -1,6 +1,10 @@
 import { Ship } from "./Ship.js";
 import { Square } from "./Square.js";
 
+import smallShip from "./assets/small-ship.png";
+import mediumShip from "./assets/medium-ship.png";
+import largeShip from "./assets/large-ship.png";
+
 export class Gameboard {
   static SHOT_TYPE_MISSED = "MISS";
   static SHOT_TYPE_HIT = "HIT";
@@ -110,7 +114,6 @@ export class Gameboard {
         // CKYTODO: Temporary styling to visualise placed ships
         const shipId = this.board[y][x].shipId;
         if (shipId != null) {
-          square.textContent = shipId;
           square.classList.add("ship");
         }
 
@@ -125,5 +128,56 @@ export class Gameboard {
     }
 
     return boardElement;
+  }
+
+  renderShips(boardSelector) {
+    this.ships.forEach((currentShip) => {
+      // Create ship image
+      const shipImageElement = document.createElement("img");
+      shipImageElement.classList = "ship-image";
+      let shipImage;
+      switch (currentShip.length) {
+        case 2:
+          shipImage = smallShip;
+          shipImageElement.classList.add("small");
+          break;
+        case 3:
+          shipImage = mediumShip;
+          shipImageElement.classList.add("medium");
+          break;
+        default:
+          shipImage = largeShip;
+          shipImageElement.classList.add("large");
+      }
+      shipImageElement.src = shipImage;
+
+      // Find square to place ship
+      let isSquareFound = false;
+      for (let y = 0; y < this.size; y++) {
+        for (let x = 0; x < this.size; x++) {
+          // First matching ship id will always be the front of the ship
+          const square = this.board[y][x];
+          if (square.shipId === currentShip.id) {
+            // Square to the right is the same ship so it must be horizontal
+            if (x + 1 < this.size) {
+              if (this.board[y][x + 1].shipId === currentShip.id) {
+                shipImageElement.classList.add("horizontal");
+                const currentTransform = shipImageElement.style.transform;
+                shipImageElement.style.transform = `${currentTransform} rotate(-90deg)`;
+              }
+            }
+            const square = document.querySelector(
+              `${boardSelector} .square[data-y='${y}'][data-x='${x}'`,
+            );
+            square.appendChild(shipImageElement);
+            isSquareFound = true;
+            break;
+          }
+        }
+        if (isSquareFound) {
+          break;
+        }
+      }
+    });
   }
 }
