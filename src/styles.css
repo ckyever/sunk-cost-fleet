@@ -94,15 +94,21 @@ h6 {
   border: 1px solid black;
 }
 
-/* .square.ship:not(.hit) {
-  background-color: lightgray;
-} */
-
-.square.hit {
+.square.hit::after {
+  position: absolute;
+  content: "";
+  width: 20px;
+  height: 20px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 100%;
+  z-index: 2;
   background-color: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
 }
 
-.square.ship.hit {
+.square.ship.hit::after {
   background-color: red;
 }
 
