@@ -77,15 +77,19 @@ h6 {
 /* End of CSS Reset */
 
 :root {
-  --main-background-color: #1e3d69;
+  --main-background-color: #032b43;
+  --board-background-color: #1e3d69;
   --dialog-background-color: #142a49;
   --marker-color-miss: #ffffff;
-  --marker-color-hit: #e02121;
+  --marker-color-hit: #d90429;
+  --main-text-color: #f7f7ff;
 }
 
 body {
-  background-color: var(--main-background-color);
-  color: white;
+  background: linear-gradient(135deg, #0a2342 0%, #0f3d60 50%, #1b4a6f 100%);
+  color: var(--main-text-color);
+  height: 100vh;
+  width: 100vw;
 }
 
 button.new-game {
@@ -163,7 +167,7 @@ button.new-game:hover {
   border: 1px dotted rgba(255, 255, 255, 0.6);
 }
 
-.opponent .board .square:hover {
+.opponent .board .square:not(.hit):hover {
   background-color: rgba(197, 197, 197, 0.4);
 }
 
@@ -241,7 +245,7 @@ dialog.gameover {
   z-index: 5;
   padding: 40px 60px;
   background-color: var(--dialog-background-color);
-  color: white;
+  color: var(--main-text-color);
   border: none;
   border-radius: 12px;
   box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.4);
