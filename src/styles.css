@@ -92,14 +92,14 @@ h6 {
   border: 1px solid black;
 }
 
-.square.ship {
+.square.ship:not(.hit) {
   background-color: lightgray;
+}
+
+.square.hit {
+  background-color: white;
 }
 
 .square.ship.hit {
   background-color: red;
-}
-
-.square.miss {
-  background-color: white;
 }

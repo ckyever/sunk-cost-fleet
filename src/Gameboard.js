@@ -1,4 +1,5 @@
 import { Ship } from "./Ship.js";
+import { Square } from "./Square.js";
 
 export class Gameboard {
   static SHOT_TYPE_MISSED = "MISS";
@@ -14,8 +15,11 @@ export class Gameboard {
 
   #generateBoard(size) {
     const board = [];
-    for (let i = 0; i < size; i++) {
-      const row = new Array(size).fill(null);
+    for (let rowIndex = 0; rowIndex < size; rowIndex++) {
+      const row = [];
+      for (let columnIndex = 0; columnIndex < size; columnIndex++) {
+        row.push(new Square());
+      }
       board.push(row);
     }
     return board;
@@ -38,7 +42,7 @@ export class Gameboard {
       if (!this.#isCoordinateIndexValid(columnIndex)) {
         return false;
       }
-      if (this.board[rowIndex][columnIndex] != null) {
+      if (this.board[rowIndex][columnIndex].shipId != null) {
         return false;
       }
     }
@@ -57,7 +61,7 @@ export class Gameboard {
       } catch {
         throw new Error(`Invalid coordinate - ${coordinate}`);
       }
-      this.board[rowIndex][columnIndex] = newShip.id;
+      this.board[rowIndex][columnIndex].shipId = newShip.id;
     });
 
     return true;
@@ -68,13 +72,16 @@ export class Gameboard {
   }
 
   receiveAttack(rowIndex, columnIndex) {
-    const position = this.board[rowIndex][columnIndex];
-    if (position == null || position === Gameboard.SHOT_TYPE_MISSED) {
-      this.board[rowIndex][columnIndex] = Gameboard.SHOT_TYPE_MISSED;
+    const square = this.board[rowIndex][columnIndex];
+    if (square.shipId == null) {
+      this.board[rowIndex][columnIndex].isHit = true;
       return false;
     } else {
-      const shipIndex = this.ships.findIndex((ship) => ship.id === position);
+      const shipIndex = this.ships.findIndex(
+        (ship) => ship.id === square.shipId,
+      );
       this.ships[shipIndex].hit();
+      this.board[rowIndex][columnIndex].isHit = true;
       return true;
     }
   }
@@ -101,20 +108,14 @@ export class Gameboard {
         square.classList = "square";
 
         // CKYTODO: Temporary styling to visualise placed ships
-        const shipId = this.board[y][x];
+        const shipId = this.board[y][x].shipId;
         if (shipId != null) {
           square.textContent = shipId;
+          square.classList.add("ship");
         }
 
-        switch (this.board[y][x]) {
-          case Gameboard.SHOT_TYPE_MISSED:
-            square.classList.add("miss");
-            break;
-          case null:
-            // Add no styling
-            break;
-          default:
-            square.classList.add("ship");
+        if (this.board[y][x].isHit) {
+          square.classList.add("hit");
         }
 
         square.dataset.x = x;
