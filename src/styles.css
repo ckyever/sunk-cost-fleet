@@ -123,6 +123,37 @@ button.new-game:hover {
   position: relative;
 }
 
+.opponent .board-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.opponent .board-container::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 150%;
+  height: 150%;
+  background: conic-gradient(
+    rgba(52, 152, 219, 0.3) 0deg,
+    rgba(52, 152, 219, 0) 60deg
+  );
+  transform: translate(-50%, -50%) rotate(0deg);
+  border-radius: 50%;
+  animation: sweep 3s linear infinite;
+  z-index: -1;
+}
+
+@keyframes sweep {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
 .opponent .board {
   cursor: crosshair;
 }
