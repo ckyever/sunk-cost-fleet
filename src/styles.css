@@ -88,6 +88,19 @@ body {
   color: white;
 }
 
+button.new-game {
+  cursor: pointer;
+  border-radius: 20px;
+  padding: 6px 10px;
+  font-size: 0.9rem;
+  border: none;
+  outline: none;
+}
+
+button.new-game:hover {
+  filter: brightness(80%);
+}
+
 .container {
   display: flex;
   flex-direction: column;
