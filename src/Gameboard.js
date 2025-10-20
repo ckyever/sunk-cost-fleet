@@ -111,7 +111,6 @@ export class Gameboard {
         const square = document.createElement("div");
         square.classList = "square";
 
-        // CKYTODO: Temporary styling to visualise placed ships
         const shipId = this.board[y][x].shipId;
         if (shipId != null) {
           square.classList.add("ship");

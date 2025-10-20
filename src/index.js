@@ -7,6 +7,9 @@ const DEFAULT_COMPUTER_WAIT_TIME = 0; // in milliseconds
 
 const playerBoard = document.querySelector(".player .board-container");
 const opponentBoard = document.querySelector(".opponent .board-container");
+const gameoverDialog = document.querySelector("dialog.gameover");
+const result = document.querySelector("dialog.gameover .result");
+
 let player;
 let opponent;
 
@@ -37,11 +40,13 @@ function renderBoards() {
 function checkForWinner() {
   let gameFinished = false;
   if (player.gameboard.isAllShipsSunk()) {
-    console.log("You lost!");
+    gameoverDialog.showModal();
+    result.textContent = "You lost";
     isGameInProgress = false;
     gameFinished = true;
   } else if (opponent.gameboard.isAllShipsSunk()) {
-    console.log("You won!");
+    gameoverDialog.showModal();
+    result.textContent = "You won";
     isGameInProgress = false;
     gameFinished = true;
   }
@@ -81,5 +86,17 @@ opponentBoard.addEventListener("click", (event) => {
 
 const newGameButton = document.querySelector(".new-game");
 newGameButton.addEventListener("click", () => {
+  newGame();
+});
+
+// Dialog buttons
+const closeDialog = document.querySelector("dialog.gameover .close");
+closeDialog.addEventListener("click", () => {
+  gameoverDialog.close();
+});
+
+const gameoverNewGame = document.querySelector("dialog.gameover .new-game");
+gameoverNewGame.addEventListener("click", () => {
+  gameoverDialog.close();
   newGame();
 });
