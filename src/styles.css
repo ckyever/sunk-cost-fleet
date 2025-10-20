@@ -109,9 +109,17 @@ body {
   position: relative;
 }
 
+.opponent .board {
+  cursor: crosshair;
+}
+
 .board .square {
   position: relative;
   border: 1px dotted rgba(255, 255, 255, 0.6);
+}
+
+.opponent .board .square:hover {
+  background-color: rgba(197, 197, 197, 0.4);
 }
 
 .square.hit::after {
