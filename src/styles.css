@@ -76,6 +76,17 @@ h6 {
 }
 /* End of CSS Reset */
 
+:root {
+  --main-background-color: #1e3d69;
+  --marker-color-miss: #ffffff;
+  --marker-color-hit: #e02121;
+}
+
+body {
+  background-color: var(--main-background-color);
+  color: white;
+}
+
 .container {
   display: flex;
   flex-direction: column;
@@ -94,13 +105,13 @@ h6 {
   display: grid;
   width: 400px;
   height: 400px;
-  background-color: lightskyblue;
+  background-color: transparent;
   position: relative;
 }
 
 .board .square {
   position: relative;
-  border: 1px solid black;
+  border: 1px dotted rgba(255, 255, 255, 0.6);
 }
 
 .square.hit::after {
@@ -113,12 +124,12 @@ h6 {
   transform: translate(-50%, -50%);
   border-radius: 100%;
   z-index: 2;
-  background-color: white;
+  background-color: var(--marker-color-miss);
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
 }
 
 .square.ship.hit::after {
-  background-color: red;
+  background-color: var(--marker-color-hit);
 }
 
 .ship-image {
