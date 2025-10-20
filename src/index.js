@@ -3,6 +3,26 @@ import { delay } from "./utility.js";
 import { Human } from "./Human.js";
 import "./styles.css";
 
+const DEFAULT_COMPUTER_WAIT_TIME = 1000; // in milliseconds
+
+const playerBoard = document.querySelector(".player .board-container");
+const opponentBoard = document.querySelector(".opponent .board-container");
+let player;
+let opponent;
+
+// Human player makes the first move
+let isPlayersTurn = true;
+
+function newGame() {
+  player = new Human();
+  opponent = new Computer();
+
+  player.randomlyPlaceShips();
+  opponent.randomlyPlaceShips();
+  renderBoards();
+  isPlayersTurn = true;
+}
+
 function renderBoards() {
   playerBoard.innerHTML = "";
   opponentBoard.innerHTML = "";
@@ -12,20 +32,7 @@ function renderBoards() {
   opponent.gameboard.renderShips(".opponent");
 }
 
-const DEFAULT_COMPUTER_WAIT_TIME = 1000; // in milliseconds
-
-const player = new Human();
-const opponent = new Computer();
-
-const playerBoard = document.querySelector(".player .board-container");
-const opponentBoard = document.querySelector(".opponent .board-container");
-
-player.randomlyPlaceShips();
-opponent.randomlyPlaceShips();
-renderBoards();
-
-// Human player makes the first move
-let isPlayersTurn = true;
+newGame();
 
 opponentBoard.addEventListener("click", (event) => {
   if (isPlayersTurn) {
@@ -45,4 +52,9 @@ opponentBoard.addEventListener("click", (event) => {
       });
     }
   }
+});
+
+const newGameButton = document.querySelector(".new-game");
+newGameButton.addEventListener("click", () => {
+  newGame();
 });
