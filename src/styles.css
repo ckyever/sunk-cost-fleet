@@ -217,9 +217,9 @@ button.new-game:hover {
   object-fit: fill;
 }
 
-/* .opponent .ship-image:not(.sunk) {
+.opponent .ship-image:not(.sunk) {
   display: none;
-} */
+}
 
 .ship-image.horizontal {
   transform-origin: top;

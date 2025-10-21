@@ -9,10 +9,17 @@ const playerBoard = document.querySelector(".player .board-container");
 const opponentBoard = document.querySelector(".opponent .board-container");
 const gameoverDialog = document.querySelector("dialog.gameover");
 const result = document.querySelector("dialog.gameover .result");
+const playerBoardTurnIndicator = document.querySelector(
+  ".player .turn-indicator",
+);
+const opponentBoardTurnIndicator = document.querySelector(
+  ".opponent .turn-indicator",
+);
 
 let player;
 let opponent;
 let isPlayersTurn;
+let consecutiveHitCount;
 let isGameInProgress;
 
 function newGame() {
@@ -25,8 +32,11 @@ function newGame() {
 
   // Human player makes the first move
   isPlayersTurn = true;
+  consecutiveHitCount = 0;
   isGameInProgress = true;
   opponentBoard.classList.add("active");
+
+  renderTurnIndicator();
 }
 
 function renderBoards() {
@@ -36,6 +46,26 @@ function renderBoards() {
   player.gameboard.renderShips(".player");
   opponentBoard.appendChild(opponent.gameboard.generateHtml());
   opponent.gameboard.renderShips(".opponent");
+}
+
+function renderTurnIndicator() {
+  if (isPlayersTurn) {
+    playerBoardTurnIndicator.style.display = "none";
+    opponentBoardTurnIndicator.style.display = "block";
+    if (consecutiveHitCount >= 1) {
+      opponentBoardTurnIndicator.textContent = "It's a hit! Take another shot";
+    } else {
+      opponentBoardTurnIndicator.textContent = "Click a square to fire at";
+    }
+  } else {
+    playerBoardTurnIndicator.style.display = "block";
+    if (consecutiveHitCount >= 1) {
+      playerBoardTurnIndicator.textContent = "Another one incoming...";
+    } else {
+      playerBoardTurnIndicator.textContent = "Shot incoming...";
+    }
+    opponentBoardTurnIndicator.style.display = "none";
+  }
 }
 
 function checkForWinner() {
@@ -65,7 +95,10 @@ function humansTurn(clickEvent) {
     );
     renderBoards();
     if (isAttackSuccessful) {
+      consecutiveHitCount++;
       return true;
+    } else {
+      consecutiveHitCount = 0;
     }
   }
   return false;
@@ -78,8 +111,11 @@ async function computersTurn() {
     renderBoards();
     if (isAttackSuccessful) {
       // Make another attack
+      consecutiveHitCount++;
+      renderTurnIndicator();
       continue;
     } else {
+      consecutiveHitCount = 0;
       break;
     }
   }
@@ -92,7 +128,6 @@ newGame();
 
 let turnInProgress = false;
 opponentBoard.addEventListener("click", async (event) => {
-  console.log(turnInProgress);
   if (!isGameInProgress) {
     return;
   }
@@ -107,6 +142,7 @@ opponentBoard.addEventListener("click", async (event) => {
   turnInProgress = true;
   if (isPlayersTurn) {
     isPlayersTurn = humansTurn(event);
+    renderTurnIndicator();
     if (checkForWinner()) {
       turnInProgress = false;
       return;
@@ -117,6 +153,7 @@ opponentBoard.addEventListener("click", async (event) => {
       checkForWinner();
       isPlayersTurn = true;
       opponentBoard.classList.add("active");
+      renderTurnIndicator();
     }
   }
   turnInProgress = false;
