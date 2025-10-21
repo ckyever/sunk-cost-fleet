@@ -15,6 +15,7 @@ const playerBoardTurnIndicator = document.querySelector(
 const opponentBoardTurnIndicator = document.querySelector(
   ".opponent .turn-indicator",
 );
+const newGameButton = document.querySelector(".new-game");
 
 let player;
 let opponent;
@@ -35,6 +36,9 @@ function newGame() {
   consecutiveHitCount = 0;
   isGameInProgress = true;
   opponentBoard.classList.add("active");
+
+  // If the game hasn't started this is the same as randomising
+  newGameButton.textContent = "Randomise Layout";
 
   renderTurnIndicator();
 }
@@ -125,7 +129,6 @@ async function computersTurn() {
 newGame();
 
 // Event listeners
-
 let turnInProgress = false;
 opponentBoard.addEventListener("click", async (event) => {
   if (!isGameInProgress) {
@@ -139,6 +142,7 @@ opponentBoard.addEventListener("click", async (event) => {
     return;
   }
 
+  newGameButton.textContent = "New Game";
   turnInProgress = true;
   if (isPlayersTurn) {
     isPlayersTurn = humansTurn(event);
@@ -159,7 +163,6 @@ opponentBoard.addEventListener("click", async (event) => {
   turnInProgress = false;
 });
 
-const newGameButton = document.querySelector(".new-game");
 newGameButton.addEventListener("click", () => {
   newGame();
 });
