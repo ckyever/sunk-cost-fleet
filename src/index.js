@@ -12,10 +12,8 @@ const result = document.querySelector("dialog.gameover .result");
 
 let player;
 let opponent;
-
-// Human player makes the first move
-let isPlayersTurn = true;
-let isGameInProgress = false;
+let isPlayersTurn;
+let isGameInProgress;
 
 function newGame() {
   player = new Human();
@@ -24,6 +22,8 @@ function newGame() {
   player.randomlyPlaceShips();
   opponent.randomlyPlaceShips();
   renderBoards();
+
+  // Human player makes the first move
   isPlayersTurn = true;
   isGameInProgress = true;
 }
@@ -53,44 +53,55 @@ function checkForWinner() {
   return gameFinished;
 }
 
+function humansTurn(clickEvent) {
+  const rowIndex = clickEvent.target.dataset.y;
+  const columnIndex = clickEvent.target.dataset.x;
+
+  if (rowIndex != null && columnIndex != null) {
+    const isAttackSuccessful = opponent.gameboard.receiveAttack(
+      rowIndex,
+      columnIndex,
+    );
+    renderBoards();
+    if (isAttackSuccessful) {
+      return true;
+    }
+  }
+  return false;
+}
+
+async function computersTurn() {
+  while (true) {
+    await delay(DEFAULT_COMPUTER_WAIT_TIME);
+    const isAttackSuccessful = opponent.attack(player.gameboard);
+    renderBoards();
+    if (isAttackSuccessful) {
+      // Make another attack
+      continue;
+    } else {
+      break;
+    }
+  }
+}
+
+// Initialise game
 newGame();
 
+// Event listeners
 opponentBoard.addEventListener("click", async (event) => {
   if (!isGameInProgress) {
     return;
   }
   if (isPlayersTurn) {
-    const rowIndex = event.target.dataset.y;
-    const columnIndex = event.target.dataset.x;
-
-    if (rowIndex != null && columnIndex != null) {
-      let isAttackSuccessful = opponent.gameboard.receiveAttack(
-        rowIndex,
-        columnIndex,
-      );
-      renderBoards();
-      if (checkForWinner()) {
-        return;
-      }
-      if (isAttackSuccessful) {
-        // Only switch turns if player misses
-        return;
-      }
-
-      // Computer makes a turn
-      isPlayersTurn = false;
-      while (!isPlayersTurn) {
-        await delay(DEFAULT_COMPUTER_WAIT_TIME);
-        isAttackSuccessful = opponent.attack(player.gameboard);
-        if (!isAttackSuccessful) {
-          isPlayersTurn = true;
-        }
-        renderBoards();
-        if (checkForWinner()) {
-          return;
-        }
-      }
+    isPlayersTurn = humansTurn(event);
+    if (checkForWinner()) {
+      return;
     }
+  }
+  if (!isPlayersTurn) {
+    await computersTurn();
+    checkForWinner();
+    isPlayersTurn = true;
   }
 });
 
@@ -99,7 +110,7 @@ newGameButton.addEventListener("click", () => {
   newGame();
 });
 
-// Dialog buttons
+// Gameover dialog buttons
 const closeDialog = document.querySelector("dialog.gameover .close");
 closeDialog.addEventListener("click", () => {
   gameoverDialog.close();
