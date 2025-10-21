@@ -9,8 +9,11 @@ export class Ship {
   }
 
   hit() {
-    if (!this.isSunk()) {
+    if (this.isSunk()) {
+      return true;
+    } else {
       this.health--;
+      return false;
     }
   }
 

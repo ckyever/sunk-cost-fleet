@@ -96,7 +96,7 @@ function humansTurn(clickEvent) {
     const isAttackSuccessful = opponent.gameboard.receiveAttack(
       rowIndex,
       columnIndex,
-    );
+    )[0];
     renderBoards();
     if (isAttackSuccessful) {
       consecutiveHitCount++;

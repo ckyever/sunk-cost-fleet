@@ -246,7 +246,8 @@ test("Place colliding ships", () => {
 
 test("Receive a single missed attack", () => {
   const game = new Gameboard(4);
-  expect(game.receiveAttack(0, 0)).toBe(false);
+  const result = game.receiveAttack(0, 0);
+  expect(result[0]).toBe(false);
 });
 
 test("Receive a single successful attack", () => {
@@ -256,7 +257,8 @@ test("Receive a single successful attack", () => {
     [0, 1],
     [0, 2],
   ]);
-  expect(game.receiveAttack(0, 0)).toBe(true);
+  const result = game.receiveAttack(0, 0);
+  expect(result[0]).toBe(true);
 });
 
 test("Reflect a missed attack on gameboard", () => {

@@ -40,10 +40,10 @@ export class Gameboard {
       } catch {
         throw new Error(`Invalid coordinate - ${coordinateList[i]}`);
       }
-      if (!this.#isCoordinateIndexValid(rowIndex)) {
+      if (!this.isCoordinateIndexValid(rowIndex)) {
         return false;
       }
-      if (!this.#isCoordinateIndexValid(columnIndex)) {
+      if (!this.isCoordinateIndexValid(columnIndex)) {
         return false;
       }
       if (this.board[rowIndex][columnIndex].shipId != null) {
@@ -71,22 +71,23 @@ export class Gameboard {
     return true;
   }
 
-  #isCoordinateIndexValid(coordinateIndex) {
+  isCoordinateIndexValid(coordinateIndex) {
     return coordinateIndex >= 0 && coordinateIndex < this.size;
   }
 
+  // Returns if a ship was hit and if it was sunk
   receiveAttack(rowIndex, columnIndex) {
     const square = this.board[rowIndex][columnIndex];
     if (square.shipId == null) {
       this.board[rowIndex][columnIndex].isHit = true;
-      return false;
+      return [false, false];
     } else {
       const shipIndex = this.ships.findIndex(
         (ship) => ship.id === square.shipId,
       );
-      this.ships[shipIndex].hit();
+      const isSunk = this.ships[shipIndex].hit();
       this.board[rowIndex][columnIndex].isHit = true;
-      return true;
+      return [true, isSunk];
     }
   }
 
