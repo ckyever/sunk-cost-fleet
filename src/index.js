@@ -81,7 +81,7 @@ function checkForWinner() {
     gameFinished = true;
   } else if (opponent.gameboard.isAllShipsSunk()) {
     gameoverDialog.showModal();
-    result.textContent = "You won";
+    result.textContent = "You won!";
     isGameInProgress = false;
     gameFinished = true;
   }

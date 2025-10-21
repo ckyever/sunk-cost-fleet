@@ -77,7 +77,7 @@ h6 {
 /* End of CSS Reset */
 
 :root {
-  --dialog-background-color: #142a49;
+  --dialog-background-color: #282b2e;
   --marker-color-miss: #ffffff;
   --marker-color-hit: #d90429;
   --main-text-color: #f7f7ff;
@@ -259,7 +259,7 @@ button.new-game:hover {
 
 /* Game over dialog */
 dialog.gameover {
-  top: 50%;
+  top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 5;
@@ -269,6 +269,7 @@ dialog.gameover {
   border: none;
   border-radius: 12px;
   box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.4);
+  text-align: center;
 }
 
 dialog.gameover button.close {
