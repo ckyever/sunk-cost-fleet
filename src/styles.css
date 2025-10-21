@@ -77,12 +77,12 @@ h6 {
 /* End of CSS Reset */
 
 :root {
-  --main-background-color: #032b43;
-  --board-background-color: #1e3d69;
   --dialog-background-color: #142a49;
   --marker-color-miss: #ffffff;
   --marker-color-hit: #d90429;
   --main-text-color: #f7f7ff;
+  --turn-indicator-color: #f3c64b;
+  --turn-indicator-text-color: #000000;
 }
 
 body {
@@ -117,6 +117,21 @@ button.new-game:hover {
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+.board-text {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.board-text .turn-indicator {
+  display: none;
+  font-size: 0.8rem;
+  background-color: var(--turn-indicator-color);
+  padding: 4px 8px;
+  border-radius: 16px;
+  color: var(--turn-indicator-text-color);
 }
 
 .board {
@@ -158,8 +173,13 @@ button.new-game:hover {
   }
 }
 
-.opponent .board {
+.opponent .board-container.active .board {
   cursor: crosshair;
+}
+
+.opponent .board-container:not(.active) .board {
+  cursor: not-allowed;
+  pointer-events: none;
 }
 
 .board .square {
@@ -197,9 +217,9 @@ button.new-game:hover {
   object-fit: fill;
 }
 
-.opponent .ship-image:not(.sunk) {
+/* .opponent .ship-image:not(.sunk) {
   display: none;
-}
+} */
 
 .ship-image.horizontal {
   transform-origin: top;

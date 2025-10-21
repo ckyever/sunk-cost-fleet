@@ -10,11 +10,23 @@
       <h1>Sunk Cost Fleet</h1>
       <div class="gameboards">
         <div class="opponent">
-          <h2>Enemy Waters</h2>
+          <div class="board-text">
+            <h2>Enemy Waters</h2>
+            <span class="turn-indicator first-shot"
+              >Click a square to fire a shot</span
+            >
+            <span class="turn-indicator shoot-again"
+              >You hit fire another one</span
+            >
+          </div>
           <div class="board-container"></div>
         </div>
         <div class="player">
-          <h2>Friendly Waters</h2>
+          <div class="board-text">
+            <h2>Friendly Waters</h2>
+            <span class="turn-indicator first-shot">Incoming shot</span>
+            <span class="turn-indicator shoot-again">They're firing again</span>
+          </div>
           <div class="board-container"></div>
         </div>
       </div>

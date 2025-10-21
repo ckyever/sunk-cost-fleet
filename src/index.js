@@ -26,6 +26,7 @@ function newGame() {
   // Human player makes the first move
   isPlayersTurn = true;
   isGameInProgress = true;
+  opponentBoard.classList.add("active");
 }
 
 function renderBoards() {
@@ -88,21 +89,37 @@ async function computersTurn() {
 newGame();
 
 // Event listeners
+
+let turnInProgress = false;
 opponentBoard.addEventListener("click", async (event) => {
+  console.log(turnInProgress);
   if (!isGameInProgress) {
     return;
   }
+  if (turnInProgress) {
+    return;
+  }
+  if (event.target.classList.contains("hit")) {
+    // If square has already been hit do nothing
+    return;
+  }
+
+  turnInProgress = true;
   if (isPlayersTurn) {
     isPlayersTurn = humansTurn(event);
     if (checkForWinner()) {
+      turnInProgress = false;
       return;
     }
+    if (!isPlayersTurn) {
+      opponentBoard.classList.remove("active");
+      await computersTurn();
+      checkForWinner();
+      isPlayersTurn = true;
+      opponentBoard.classList.add("active");
+    }
   }
-  if (!isPlayersTurn) {
-    await computersTurn();
-    checkForWinner();
-    isPlayersTurn = true;
-  }
+  turnInProgress = false;
 });
 
 const newGameButton = document.querySelector(".new-game");
