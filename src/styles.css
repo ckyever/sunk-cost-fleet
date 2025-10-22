@@ -77,13 +77,15 @@ h6 {
 /* End of CSS Reset */
 
 :root {
-  --main-background-color: #262627;
-  --dialog-background-color: #282b2e;
+  --main-background-color: #282b2e;
+  --dialog-background-color: #262627;
+  --gameboard-background-color: #0c1620;
   --marker-color-miss: #ffffff;
   --marker-color-hit: #d90429;
   --main-text-color: #f7f7ff;
   --turn-indicator-color: #f3c64b;
   --turn-indicator-text-color: #000000;
+  --slight-dark-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
 }
 
 body {
@@ -95,21 +97,46 @@ body {
 }
 
 h1 {
-  font-family: "Allerta Stencil", sans-serif;
+  font-family: "Josefin Sans", sans-serif;
   font-size: 2.5rem;
+  margin-top: 24px;
 }
 
 button.new-game {
   cursor: pointer;
   border-radius: 20px;
-  padding: 6px 10px;
+  padding: 10px;
+  min-width: 120px;
   font-size: 0.9rem;
+  font-weight: 500;
   border: none;
   outline: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  box-shadow: var(--slight-light-shadow);
 }
 
 button.new-game:hover {
   filter: brightness(80%);
+}
+
+.heading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin-left: -8px;
+}
+
+.logo {
+  width: 75px;
+  margin-top: 8px;
+}
+
+.icon {
+  width: 24px;
 }
 
 .container {
@@ -117,28 +144,43 @@ button.new-game:hover {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 16px;
 }
 
 .gameboards {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 20px;
+}
+
+.gameboards .opponent,
+.gameboards .player {
+  padding: 10px 36px 36px 36px;
+  background-color: var(--gameboard-background-color);
+  border-radius: 20px;
+  box-shadow: var(--slight-dark-shadow);
 }
 
 .board-text {
   display: flex;
   align-items: center;
   gap: 16px;
+  margin-bottom: 6px;
+}
+
+.board-text h2 {
+  font-size: 1.5rem;
 }
 
 .board-text .turn-indicator {
   display: none;
   font-size: 0.8rem;
+  font-weight: 500;
   background-color: var(--turn-indicator-color);
   padding: 4px 8px;
   border-radius: 16px;
   color: var(--turn-indicator-text-color);
+  box-shadow: var(--slight-dark-shadow);
 }
 
 .board {
@@ -147,10 +189,17 @@ button.new-game:hover {
   height: 400px;
   background-color: transparent;
   position: relative;
+  border: 1px solid white;
 }
 
 .board-container {
-  background: linear-gradient(#1b4a6f 0%, #0f3d60 50%, #0a2342 100%);
+  background: radial-gradient(
+    circle,
+    rgba(2, 0, 36, 0) 15%,
+    rgba(30, 238, 219, 0.1) 60%,
+    rgba(30, 238, 219, 0.2497373949579832) 85%,
+    rgba(30, 238, 219, 0.40379901960784315) 100%
+  );
   z-index: 2;
   position: relative;
   overflow: hidden;
@@ -164,8 +213,8 @@ button.new-game:hover {
   width: 150%;
   height: 150%;
   background: conic-gradient(
-    rgba(52, 152, 219, 0.3) 0deg,
-    rgba(52, 152, 219, 0) 60deg
+    rgba(30, 238, 219, 0.3) 0deg,
+    rgba(30, 238, 219, 0) 60deg
   );
   transform: translate(-50%, -50%) rotate(0deg);
   border-radius: 50%;
@@ -211,7 +260,7 @@ button.new-game:hover {
   border-radius: 100%;
   z-index: 2;
   background-color: var(--marker-color-miss);
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+  box-shadow: var(--slight-dark-shadow);
 }
 
 .square.ship.hit::after {
@@ -221,21 +270,21 @@ button.new-game:hover {
 @keyframes water-ripple {
   0% {
     box-shadow:
-      0 0 0 0 rgba(100, 150, 255, 0.6),
-      0 0 0 0 rgba(100, 150, 255, 0.4),
-      0 0 0 0 rgba(100, 150, 255, 0.2);
+      0 0 0 0 rgba(30, 238, 219, 0.6),
+      0 0 0 0 rgba(30, 238, 219, 0.4),
+      0 0 0 0 rgba(30, 238, 219, 0.2);
   }
   50% {
     box-shadow:
-      0 0 0 10px rgba(100, 150, 255, 0.3),
-      0 0 0 20px rgba(100, 150, 255, 0.2),
-      0 0 0 30px rgba(100, 150, 255, 0.1);
+      0 0 0 10px rgba(30, 238, 219, 0.3),
+      0 0 0 20px rgba(30, 238, 219, 0.2),
+      0 0 0 30px rgba(30, 238, 219, 0.1);
   }
   100% {
     box-shadow:
-      0 0 0 20px rgba(100, 150, 255, 0),
-      0 0 0 40px rgba(100, 150, 255, 0),
-      0 0 0 60px rgba(100, 150, 255, 0);
+      0 0 0 20px rgba(30, 238, 219, 0),
+      0 0 0 40px rgba(30, 238, 219, 0),
+      0 0 0 60px rgba(30, 238, 219, 0);
   }
 }
 
@@ -298,13 +347,14 @@ dialog.gameover {
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 5;
-  padding: 40px 60px;
+  padding: 30px 50px;
   background-color: var(--dialog-background-color);
   color: var(--main-text-color);
   border: none;
   border-radius: 12px;
   box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.4);
   text-align: center;
+  opacity: 0.9;
 }
 
 dialog.gameover button.close {
@@ -325,4 +375,8 @@ dialog.gameover button.close:hover {
 dialog.gameover img.close-icon {
   width: 20px;
   height: 20px;
+}
+
+dialog.gameover h2 {
+  margin-bottom: 12px;
 }

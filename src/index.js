@@ -1,6 +1,8 @@
 import { Computer } from "./Computer.js";
 import { delay } from "./utility.js";
+import diceIcon from "./assets/dice.svg";
 import { Human } from "./Human.js";
+import newGameIcon from "./assets/new-game.svg";
 import "./styles.css";
 
 const DEFAULT_COMPUTER_WAIT_TIME = 1000; // in milliseconds
@@ -16,6 +18,8 @@ const opponentBoardTurnIndicator = document.querySelector(
   ".opponent .turn-indicator",
 );
 const newGameButton = document.querySelector(".new-game");
+const newGameIconElement = document.querySelector(".new-game .icon");
+const newGameText = document.querySelector(".new-game-text");
 
 let player;
 let opponent;
@@ -38,7 +42,8 @@ function newGame() {
   opponentBoard.classList.add("active");
 
   // If the game hasn't started this is the same as randomising
-  newGameButton.textContent = "Randomise Layout";
+  newGameText.textContent = "Randomise Layout";
+  newGameIconElement.src = diceIcon;
 
   renderTurnIndicator();
 }
@@ -157,7 +162,8 @@ opponentBoard.addEventListener("click", async (event) => {
     return;
   }
 
-  newGameButton.textContent = "New Game";
+  newGameText.textContent = "New Game";
+  newGameIconElement.src = newGameIcon;
   turnInProgress = true;
   if (isPlayersTurn) {
     isPlayersTurn = humansTurn(event);
