@@ -122,6 +122,24 @@ button.new-game:hover {
   filter: brightness(80%);
 }
 
+footer {
+  color: gray;
+  position: fixed;
+  bottom: 10px;
+  left: 0;
+  width: 100%;
+  font-size: 0.9rem;
+  font-weight: 600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.github-icon {
+  min-width: 24px;
+}
+
 .heading {
   display: flex;
   justify-content: center;
