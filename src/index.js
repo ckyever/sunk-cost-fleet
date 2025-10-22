@@ -116,6 +116,9 @@ async function computersTurn() {
     renderBoards();
     animateShot(".player", coordinates[0], coordinates[1]);
     if (isAttackSuccessful) {
+      if (checkForWinner()) {
+        break;
+      }
       // Make another attack
       consecutiveHitCount++;
       renderTurnIndicator();
@@ -166,7 +169,6 @@ opponentBoard.addEventListener("click", async (event) => {
     if (!isPlayersTurn) {
       opponentBoard.classList.remove("active");
       await computersTurn();
-      checkForWinner();
       isPlayersTurn = true;
       opponentBoard.classList.add("active");
       renderTurnIndicator();
