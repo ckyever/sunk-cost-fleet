@@ -98,6 +98,7 @@ function humansTurn(clickEvent) {
       columnIndex,
     )[0];
     renderBoards();
+    animateShot(".opponent", rowIndex, columnIndex);
     if (isAttackSuccessful) {
       consecutiveHitCount++;
       return true;
@@ -111,8 +112,9 @@ function humansTurn(clickEvent) {
 async function computersTurn() {
   while (true) {
     await delay(DEFAULT_COMPUTER_WAIT_TIME);
-    const isAttackSuccessful = opponent.attack(player.gameboard);
+    const [isAttackSuccessful, coordinates] = opponent.attack(player.gameboard);
     renderBoards();
+    animateShot(".player", coordinates[0], coordinates[1]);
     if (isAttackSuccessful) {
       // Make another attack
       consecutiveHitCount++;
@@ -123,6 +125,16 @@ async function computersTurn() {
       break;
     }
   }
+}
+
+function animateShot(boardSelector, rowIndex, columnIndex) {
+  const square = document.querySelector(
+    `${boardSelector} .square[data-y="${rowIndex}"][data-x="${columnIndex}"]`,
+  );
+  square.classList.add("shot-animation");
+  setTimeout(() => {
+    square.classList.remove("shot-animation");
+  }, 500);
 }
 
 // Initialise game

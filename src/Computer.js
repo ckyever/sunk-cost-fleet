@@ -108,15 +108,13 @@ export class Computer extends Player {
   attack(gameboard) {
     const MAX_ATTEMPTS = 1000;
     let isHit, sunkShipCoordinates;
+    let rowIndex, columnIndex;
 
     let attempts = 0;
     while (true) {
       if (attempts > MAX_ATTEMPTS) {
         throw new Error("Attempted to attack too many times");
       }
-
-      let rowIndex;
-      let columnIndex;
 
       if (this.hitsToExplore.length == 0) {
         // We don't know where any potential ships are so pick randomly
@@ -145,6 +143,7 @@ export class Computer extends Player {
         break;
       }
     }
-    return isHit;
+    const coordinate = [rowIndex, columnIndex];
+    return [isHit, coordinate];
   }
 }
