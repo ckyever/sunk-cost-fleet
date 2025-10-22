@@ -1,9 +1,10 @@
 import { Player } from "./Player.js";
+import { getCoordinateListDifferences } from "./utility.js";
 
 export class Computer extends Player {
   constructor(boardSize) {
     super(boardSize);
-    this.lastSuccessfulHit = null;
+    this.hitsToExplore = [];
   }
 
   #getRandomBoardPosition(gameboard) {
@@ -12,55 +13,103 @@ export class Computer extends Player {
     return [rowIndex, columnIndex];
   }
 
-  #findNextHitFromPreviousOne(gameboard) {
-    const MAX_DIRECTION_TO_CHECK = 4;
-    let rowIndex,
-      columnIndex = null;
+  #getPotentialShipSquare(gameboard) {
+    const [centralRowIndex, centralColumnIndex] = this.hitsToExplore[0];
+    let square;
 
-    for (let i = 0; i < MAX_DIRECTION_TO_CHECK; i++) {
-      [rowIndex, columnIndex] = this.lastSuccessfulHit;
-      switch (i) {
-        case 0: // up
+    // Check squares above
+    let rowIndex = centralRowIndex - 1;
+    let columnIndex = centralColumnIndex;
+    while (gameboard.isCoordinateIndexValid(rowIndex)) {
+      square = gameboard.board[rowIndex][columnIndex];
+      if (square.isHit) {
+        if (square.shipId == null) {
+          // This is a miss so check the next direction
+          break;
+        } else {
+          // This is a hit so keep going up
           rowIndex--;
-          break;
-        case 1: // right
-          columnIndex++;
-          break;
-        case 2: // down
-          rowIndex++;
-          break;
-        case 3: // left
-          columnIndex--;
-          break;
-      }
-
-      if (
-        gameboard.isCoordinateIndexValid(rowIndex) &&
-        gameboard.isCoordinateIndexValid(columnIndex) &&
-        !gameboard.board[rowIndex][columnIndex].isHit
-      ) {
-        // We've found the next valid shot
-        break;
+        }
       } else {
-        // Setting it to null ensures that if
-        rowIndex = null;
-        columnIndex = null;
+        // Found an unhit square
+        return [rowIndex, columnIndex];
       }
     }
 
-    // None of it's surrounding hits are valid so just get a random position
-    if (rowIndex == null || columnIndex == null) {
-      this.lastSuccessfulHit = null;
-      [rowIndex, columnIndex] = this.#getRandomBoardPosition(gameboard);
+    // Check squares below
+    rowIndex = centralRowIndex + 1;
+    columnIndex = centralColumnIndex;
+    while (gameboard.isCoordinateIndexValid(rowIndex)) {
+      square = gameboard.board[rowIndex][columnIndex];
+      if (square.isHit) {
+        if (square.shipId == null) {
+          // This is a miss so check the next direction
+          break;
+        } else {
+          // This is a hit so keep going down
+          rowIndex++;
+        }
+      } else {
+        // Found an unhit square
+        return [rowIndex, columnIndex];
+      }
     }
-    return [rowIndex, columnIndex];
+
+    // Check squares to the right
+    rowIndex = centralRowIndex;
+    columnIndex = centralColumnIndex + 1;
+    while (gameboard.isCoordinateIndexValid(columnIndex)) {
+      square = gameboard.board[rowIndex][columnIndex];
+      if (square.isHit) {
+        if (square.shipId == null) {
+          // This is a miss so check the next direction
+          break;
+        } else {
+          // This is a hit so keep right
+          columnIndex++;
+        }
+      } else {
+        // Found an unhit square
+        return [rowIndex, columnIndex];
+      }
+    }
+
+    // Check squares to the left
+    rowIndex = centralRowIndex;
+    columnIndex = centralColumnIndex - 1;
+    while (gameboard.isCoordinateIndexValid(columnIndex)) {
+      square = gameboard.board[rowIndex][columnIndex];
+      if (square.isHit) {
+        if (square.shipId == null) {
+          // This is a miss so check the next direction
+          break;
+        } else {
+          // This is a hit so keep going left
+          columnIndex--;
+        }
+      } else {
+        // Found an unhit square
+        return [rowIndex, columnIndex];
+      }
+    }
+
+    // It should find something, so shouldn't reach this far
+    throw new Error("Exploring potential ship failed");
+  }
+
+  #removeSunkShipFromExploreQueue(sunkCoordinates) {
+    const differences = getCoordinateListDifferences(
+      this.hitsToExplore,
+      sunkCoordinates,
+    );
+    return differences;
   }
 
   attack(gameboard) {
     const MAX_ATTEMPTS = 1000;
+    let isHit, sunkShipCoordinates;
 
     let attempts = 0;
-    let isHit, isSunk;
     while (true) {
       if (attempts > MAX_ATTEMPTS) {
         throw new Error("Attempted to attack too many times");
@@ -69,24 +118,28 @@ export class Computer extends Player {
       let rowIndex;
       let columnIndex;
 
-      // If not last successful last hit get random position
-      if (this.lastSuccessfulHit == null) {
+      if (this.hitsToExplore.length == 0) {
+        // We don't know where any potential ships are so pick randomly
         [rowIndex, columnIndex] = this.#getRandomBoardPosition(gameboard);
       } else {
-        [rowIndex, columnIndex] = this.#findNextHitFromPreviousOne(gameboard);
+        // Explore the hits in our queue
+        [rowIndex, columnIndex] = this.#getPotentialShipSquare(gameboard);
       }
 
       if (gameboard.board[rowIndex][columnIndex].isHit) {
         continue;
       } else {
-        [isHit, isSunk] = gameboard.receiveAttack(rowIndex, columnIndex);
+        [isHit, sunkShipCoordinates] = gameboard.receiveAttack(
+          rowIndex,
+          columnIndex,
+        );
         if (isHit) {
-          if (isSunk) {
-            // Sunk so no need to find the rest of the ship
-            this.lastSuccessfulHit = null;
+          if (sunkShipCoordinates.length > 0) {
+            // Ship has been sunk so make sure we don't explore any of its coordinates
+            this.hitsToExplore =
+              this.#removeSunkShipFromExploreQueue(sunkShipCoordinates);
           } else {
-            // Successful hit so remember this coordinate to try find the next ship
-            this.lastSuccessfulHit = [rowIndex, columnIndex];
+            this.hitsToExplore.push([rowIndex, columnIndex]);
           }
         }
         break;

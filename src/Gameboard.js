@@ -52,7 +52,7 @@ export class Gameboard {
     }
 
     // Create ship
-    const newShip = new Ship(coordinateList.length);
+    const newShip = new Ship(coordinateList.length, coordinateList);
     this.ships.push(newShip);
 
     // Place the ship on the board
@@ -78,16 +78,20 @@ export class Gameboard {
   // Returns if a ship was hit and if it was sunk
   receiveAttack(rowIndex, columnIndex) {
     const square = this.board[rowIndex][columnIndex];
+    let sunkCoordinates = [];
     if (square.shipId == null) {
       this.board[rowIndex][columnIndex].isHit = true;
-      return [false, false];
+      return [false, []];
     } else {
       const shipIndex = this.ships.findIndex(
         (ship) => ship.id === square.shipId,
       );
-      const isSunk = this.ships[shipIndex].hit();
+      // Ship has been sunk so return coordinates
+      if (this.ships[shipIndex].hit()) {
+        sunkCoordinates = this.ships[shipIndex].coordinates;
+      }
       this.board[rowIndex][columnIndex].isHit = true;
-      return [true, isSunk];
+      return [true, sunkCoordinates];
     }
   }
 

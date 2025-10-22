@@ -1,10 +1,11 @@
 export class Ship {
   static #nextShipId = 1;
 
-  constructor(length) {
+  constructor(length, coordinates) {
     this.length = length;
     this.health = length;
     this.id = Ship.#nextShipId;
+    this.coordinates = coordinates;
     Ship.#nextShipId++;
   }
 
@@ -13,7 +14,7 @@ export class Ship {
       return true;
     } else {
       this.health--;
-      return false;
+      return this.isSunk();
     }
   }
 
