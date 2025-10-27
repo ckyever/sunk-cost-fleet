@@ -398,3 +398,10 @@ dialog.gameover img.close-icon {
 dialog.gameover h2 {
   margin-bottom: 12px;
 }
+
+@media (max-width: 600px) {
+  footer {
+    position: static;
+    margin-top: 20px;
+  }
+}
